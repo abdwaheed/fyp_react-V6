@@ -1,0 +1,88 @@
+// FIREBASE IMPORTS
+
+import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Auth, Firestore, Storage } from '../../config/firebase'
+import {
+  createUserWithEmailAndPassword, signInWithEmailAndPassword
+} from "firebase/auth";
+
+import { onAuthStateChanged } from '@firebase/auth';
+import { useEffect, useRef, useState } from 'react'
+import { connectStorageEmulator } from '@firebase/storage';
+import firebase from "firebase/app";
+
+// FIREBASE IMPORTS
+
+import React from 'react'
+import Searchbar from '../../components/searchbar';
+import Navbar from '../../components/navbar';
+import Footer from '../../components/footer';
+import Comments from '../../components/comments';
+import UserplaycourseLectures from '../../components/UserplaycourseLectures';
+import Formbutton from '../../components/formbutton';
+
+export default function UserplayCourse() {
+
+  const location = useLocation();
+  const { coursedata } = location.state;
+
+  const [lectures, setLectures] = useState([]);
+
+  useEffect(() => {
+
+    // coursedata?.lectures.map((course) => {
+    //   Firestore.collection("courses").doc(course).get().then(res => {
+    //     if (res.exists)
+    //       setLectures(prevData => [...prevData, { id: res.id, ...res.data() }])
+    //   })
+    // })
+    console.log(coursedata);
+  }, [])
+
+  return (
+    <>
+      <Navbar />
+      <Searchbar />
+
+      <section class="dashboard-lesson pt-5">
+        <div class="banner text-center py-5 text-white bg-danger" styles="background-color: #dc3545;">
+          <h2>C++ PROGRAMMING LANGUAGE</h2>
+          <p>If you have any further question please feel free to contact with us 11AM to 8PM only business days.</p>
+        </div>
+      </section>
+
+
+
+      <section class="user-panel available-courses">
+
+        <div class="courses1 py-5">
+
+          <div class="ten text-white">
+            <div class={`row mt-5`}>
+
+              {coursedata.lectures ?
+                coursedata?.lectures.map((lecture) => (
+                  <UserplaycourseLectures lecture={lecture} path='/usercoursevideo' />
+                ))
+                : <p className='text-dark'>no lectures in this course</p>
+              }
+            </div>
+
+
+            {/* <UserplaycourseLectures path='/usercoursevideo' />
+
+            <UserplaycourseLectures path='/usercoursevideo' />
+
+            <UserplaycourseLectures path='/usercoursevideo' /> */}
+
+
+          </div>
+        </div>
+
+      </section>
+
+      <Footer />
+
+    </>
+  )
+}
